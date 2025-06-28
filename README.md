@@ -17,6 +17,20 @@ A comprehensive Juniper network automation tool for pushing configurations to de
 - [Troubleshooting](#-troubleshooting)
 - [Contributing](#-contributing)
 
+
+## Features
+- **Multi-device support**: Push configurations to multiple Juniper devices simultaneously.
+- **Configuration validation**: Automatically validate configurations before applying.
+- **Pre-flight checks**: Ensure devices are ready for configuration changes.
+- **Dry run mode**: Test configurations without applying changes.
+- **Commit types**: Supports standard commit, commit-confirmed, and rollback operations.
+- **Parallel execution**: Optionally execute operations on multiple devices in parallel.
+- **Backup management**: Automatically create backups before applying changes.
+- **Detailed reporting**: Provides comprehensive reports on operation results, including success/failure status and performance metrics.
+- **Error handling**: Graceful error handling with detailed logs for troubleshooting.
+- **Extensible architecture**: Easily extendable for future enhancements and custom operations.
+
+
 ## 🌊 Workflow
 
 ```mermaid
@@ -170,11 +184,13 @@ pip install uv
 uv --version
 ```
 
-#### Step 3: Clone and Setup the Project
+#### Step 3: Download the project
+
+##### Option 1: Clone the repository using Git
 
 ```cmd
 # Clone the repository (or download and extract)
-git clone <repository-url>
+git clone https://github.com/TheNetworker/junos_push_configuration
 cd junos_push_configuration
 
 # Create virtual environment and install dependencies
@@ -186,6 +202,12 @@ uv sync
 # Install the tool in development mode
 uv pip install -e .
 ```
+##### Option 2: Download the ZIP file from GitHub
+1. Go to the [repository](https://github.com/TheNetworker/junos_push_configuration)
+2. Follow the below steps in the image
+3. Extract the compressed file
+
+![image-20250628144011357](./README.assets/image-20250628144011357.png)
 
 #### Step 4: Verify Installation
 
@@ -276,7 +298,7 @@ junos-push --help
 
 ### config.ini Setup
 
-Create or modify the `config.ini` file in your project directory:
+1. Create or modify the `config.ini` file in your project directory:
 
 ```ini
 [settings]
@@ -299,6 +321,9 @@ node2=10.10.30.2
 node1=10.10.40.1
 node2=10.10.40.2
 ```
+![image-20250628143957774](./README.assets/image-20250628143957774.png)
+
+2. Add your desired junos configuration (in SET format) to a new file at the same directory as tool, for example, *my_config.set*
 
 **Configuration Sections:**
 - `[settings]`: Contains authentication credentials
@@ -368,12 +393,22 @@ junos-push -g <group> -c <config_file> -o <operation> [options]
 junos-push -g core -c my_config.set -o check
 ```
 
+![image-20250628143734916](./README.assets/image-20250628143734916.png)
+
+
+
 ### Example 2: Commit Configuration with Backup
 
 ```bash
 # Commit configuration to edge group with backup
 junos-push -g edge -c interface_config.set -o commit --backup
 ```
+
+
+
+![image-20250628143710621](./README.assets/image-20250628143710621.png)
+
+
 
 ### Example 3: Commit with Confirmation (Safer)
 
@@ -395,6 +430,7 @@ junos-push -g datacenter -c bgp_config.set -o commit -p -v
 # Test what would happen without making changes
 junos-push -g core -c new_feature.set --dry-run
 ```
+![image-20250628143647703](./README.assets/image-20250628143647703.png)
 
 ### Example 6: Rollback Configuration
 
@@ -403,19 +439,48 @@ junos-push -g core -c new_feature.set --dry-run
 junos-push -g edge -c dummy.set -o rollback
 ```
 
-### Example 7: Custom config.ini Location
+
+
+![image-20250628143817072](./README.assets/image-20250628143817072.png)
+
+
+
+### Example 7: Compare Configuration (using levenshtein distance)
+
+```bash
+# Rollback to previous configuration
+junos-push -g edge -c dummy.set -o compare
+```
+
+
+
+![image-20250628143850075](./README.assets/image-20250628143850075.png)
+
+
+
+
+
+### Example 8: Custom config.ini Location
 
 ```bash
 # Use alternative config file
 junos-push -g core -c config.set -i /path/to/custom_config.ini
 ```
 
-### Example 8: Extended Timeout for Slow Networks
+
+
+
+
+### Example 9: Extended Timeout for Slow Networks
 
 ```bash
 # Use longer timeout for slow connections
 junos-push -g remote_site -c config.set --timeout 120
 ```
+
+
+
+
 
 ## 🔧 Configuration File Format
 
@@ -588,7 +653,7 @@ We welcome contributions! Please:
 
 ```bash
 # Clone and setup development environment
-git clone <repository-url>
+git clone https://github.com/TheNetworker/junos_push_configuration
 cd junos_push_configuration
 uv sync --dev
 
