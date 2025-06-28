@@ -1,0 +1,27 @@
+[project]
+name = "junos-push-configuration"
+version = "0.1.0"
+description = "A comprehensive Juniper network automation tool for pushing configurations to device groups"
+requires-python = ">=3.8"
+dependencies = [
+    "junos-eznc>=2.6.8",
+    "rich>=13.7.0",
+    "click>=8.1.7",
+    "configparser>=6.0.0",
+    "netmiko>=4.3.0",
+    "paramiko>=3.4.0",
+    "pyyaml>=6.0.1",
+    "ipaddress",
+    "python-Levenshtein>=0.21.1",
+    "difflib2>=0.1.0",
+]
+
+[project.scripts]
+junos-push = "junos_push.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["junos_push"]

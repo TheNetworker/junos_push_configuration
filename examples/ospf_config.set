@@ -1,0 +1,24 @@
+# Example OSPF Configuration
+# This configuration sets up OSPF routing protocol
+
+# OSPF configuration
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0
+
+set protocols ospf area 0.0.0.1 interface ge-0/0/2.0
+
+# OSPF authentication
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0 authentication md5 1 key "$9$mTz9AtOREhcleW"
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0 authentication md5 1 key "$9$mTz9AtOREhcleW"
+
+# Export policy for OSPF
+set policy-options policy-statement OSPF-EXPORT term 1 from protocol direct
+set policy-options policy-statement OSPF-EXPORT term 1 from route-filter 10.1.0.0/16 orlonger
+set policy-options policy-statement OSPF-EXPORT term 1 then accept
+set policy-options policy-statement OSPF-EXPORT term 2 then reject
+
+set protocols ospf export OSPF-EXPORT
+
+# OSPF router-id
+set routing-options router-id 1.1.1.1

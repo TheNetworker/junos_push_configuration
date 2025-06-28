@@ -1,0 +1,42 @@
+# Example Security Configuration
+# This configuration sets up basic security policies and zones
+
+# Security zones
+set security zones security-zone trust host-inbound-traffic system-services all
+set security zones security-zone trust host-inbound-traffic protocols all
+set security zones security-zone trust interfaces ge-0/0/0.0
+set security zones security-zone trust interfaces ge-0/0/1.0
+
+set security zones security-zone untrust host-inbound-traffic system-services ssh
+set security zones security-zone untrust host-inbound-traffic system-services ping
+set security zones security-zone untrust interfaces ge-0/0/2.0
+
+set security zones security-zone dmz host-inbound-traffic system-services ssh
+set security zones security-zone dmz host-inbound-traffic system-services ping
+set security zones security-zone dmz host-inbound-traffic system-services https
+set security zones security-zone dmz interfaces ge-0/0/3.0
+
+# Address books
+set security address-book global address LAN_NETWORK 10.1.1.0/24
+set security address-book global address DMZ_NETWORK 10.1.2.0/24
+set security address-book global address WEB_SERVER 10.1.2.10/32
+set security address-book global address-set INTERNAL_NETWORKS address LAN_NETWORK
+set security address-book global address-set INTERNAL_NETWORKS address DMZ_NETWORK
+
+# Security policies
+set security policies from-zone trust to-zone untrust policy OUTBOUND_ACCESS match source-address INTERNAL_NETWORKS
+set security policies from-zone trust to-zone untrust policy OUTBOUND_ACCESS match destination-address any
+set security policies from-zone trust to-zone untrust policy OUTBOUND_ACCESS match application any
+set security policies from-zone trust to-zone untrust policy OUTBOUND_ACCESS then permit
+
+set security policies from-zone untrust to-zone dmz policy WEB_ACCESS match source-address any
+set security policies from-zone untrust to-zone dmz policy WEB_ACCESS match destination-address WEB_SERVER
+set security policies from-zone untrust to-zone dmz policy WEB_ACCESS match application junos-http
+set security policies from-zone untrust to-zone dmz policy WEB_ACCESS match application junos-https
+set security policies from-zone untrust to-zone dmz policy WEB_ACCESS then permit
+
+# NAT configuration
+set security nat source rule-set TRUST_TO_UNTRUST from zone trust
+set security nat source rule-set TRUST_TO_UNTRUST to zone untrust
+set security nat source rule-set TRUST_TO_UNTRUST rule TRUST_TO_UNTRUST_RULE match source-address 0.0.0.0/0
+set security nat source rule-set TRUST_TO_UNTRUST rule TRUST_TO_UNTRUST_RULE then source-nat interface

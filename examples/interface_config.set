@@ -1,0 +1,24 @@
+# Example Junos Configuration - Interface Setup
+# This configuration sets up basic interface configuration
+
+# Management interface configuration
+set interfaces fxp0 unit 0 family inet address 192.168.100.10/24
+set interfaces fxp0 unit 0 description "Management Interface"
+
+# LAN interfaces
+set interfaces ge-0/0/0 unit 0 family inet address 10.1.1.1/24
+set interfaces ge-0/0/0 unit 0 description "LAN Interface - Core Network"
+set interfaces ge-0/0/0 enable
+
+set interfaces ge-0/0/1 unit 0 family inet address 10.1.2.1/24
+set interfaces ge-0/0/1 unit 0 description "LAN Interface - DMZ Network"
+set interfaces ge-0/0/1 enable
+
+# WAN interface
+set interfaces ge-0/0/2 unit 0 family inet address 203.0.113.1/30
+set interfaces ge-0/0/2 unit 0 description "WAN Interface - ISP Connection"
+set interfaces ge-0/0/2 enable
+
+# Loopback interface
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set interfaces lo0 unit 0 description "Loopback Interface"

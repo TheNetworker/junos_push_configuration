@@ -1,0 +1,3 @@
+set system services ftp
+set system services rest enable-explorer
+#set system services rest routing-instance mgmt_junos

@@ -1,0 +1,26 @@
+# Example BGP Configuration
+# This configuration sets up BGP peering and routing policies
+
+# BGP configuration
+set routing-options router-id 1.1.1.1
+set routing-options autonomous-system 65001
+
+# BGP groups
+set protocols bgp group IBGP type internal
+set protocols bgp group IBGP local-address 1.1.1.1
+set protocols bgp group IBGP family inet unicast
+set protocols bgp group IBGP neighbor 2.2.2.2 description "Internal BGP Peer"
+
+set protocols bgp group EBGP type external
+set protocols bgp group EBGP local-address 203.0.113.1
+set protocols bgp group EBGP family inet unicast
+set protocols bgp group EBGP peer-as 65002
+set protocols bgp group EBGP neighbor 203.0.113.2 description "External BGP Peer - ISP"
+
+# BGP export policy
+set policy-options policy-statement BGP-EXPORT term 1 from protocol direct
+set policy-options policy-statement BGP-EXPORT term 1 from route-filter 10.0.0.0/8 orlonger
+set policy-options policy-statement BGP-EXPORT term 1 then accept
+set policy-options policy-statement BGP-EXPORT term 2 then reject
+
+set protocols bgp group EBGP export BGP-EXPORT
