@@ -454,7 +454,7 @@ junos-push -g edge -c dummy.set -o compare
 
 
 
-![image-20250628143850075](./README.assets/image-20250628143850075.png)
+![image-20250628144843025](./README.assets/image-20250628144843025.png)
 
 
 
