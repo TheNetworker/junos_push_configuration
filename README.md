@@ -209,6 +209,12 @@ uv pip install -e .
 
 ![image-20250628144011357](./README.assets/image-20250628144011357.png)
 
+
+##### Option 3: Download the file directly from the browser
+Download the file directly from the browser using the link below:
+[Download junos_push_configuration.zip](https://github.com/TheNetworker/junos_push_configuration/archive/refs/heads/master.zip)
+
+
 #### Step 4: Verify Installation
 
 ```cmd
@@ -454,9 +460,15 @@ junos-push -g edge -c dummy.set -o compare
 
 
 
+**Compare Result**
+
 ![image-20250628144843025](./README.assets/image-20250628144843025.png)
 
 
+
+**Compare Stats**
+
+![image-20250628221301029](./README.assets/image-20250628221301029.png)
 
 
 
