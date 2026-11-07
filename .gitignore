@@ -179,3 +179,5 @@ cython_debug/
 # other machine — including the Mac Studio itself, which clones from GitHub.
 scripts/upload_to_macstudio.sh
 scripts/download_from_macstudio.sh
+scripts/ship_to_macstudio.sh
+scripts/fetch_from_macstudio.sh
